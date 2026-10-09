@@ -1,0 +1,7 @@
+@extends('layout')
+@section('content')
+<a href="/">← Browse reports</a><section class="panel"><span class="badge">{{ ucfirst($report->status) }}</span><h1>{{ $report->make }} {{ $report->model }}</h1><p class="plate">{{ $report->registration }}</p><p>{{ $report->colour }} · {{ $report->community->name }}, {{ $report->community->province }} · Stolen {{ $report->stolen_on->format('d M Y') }}</p><p class="description">{{ $report->description }}</p>
+<div class="grid">@foreach($report->photos as $photo)<img class="vehicle-photo" src="/photos/{{ $photo->id }}" alt="Submitted vehicle photo" loading="lazy">@endforeach</div></section>
+@if($report->status === 'approved')<section class="panel narrow"><h2>Have information?</h2><p>Your tip goes only to moderators. You may omit your contact details. Tips expire after 90 days. This is not an emergency service. Web server infrastructure may retain connection logs; absolute anonymity is not guaranteed.</p>
+<form method="post" action="/reports/{{ $report->id }}/tips">@csrf<label>Useful information<textarea name="message" required minlength="10" maxlength="2000" rows="4"></textarea></label><label>Contact details (optional)<input name="contact" maxlength="254" autocomplete="off"></label><label class="check"><input type="checkbox" name="consent" value="1" required>I agree to share this tip privately with moderators.</label><button>Send private tip</button></form></section>@endif
+@endsection
